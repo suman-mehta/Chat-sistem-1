@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Romantic Chat - Connect with Your Loved One</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ffafbd, #ffc3a0);
+            color: #5a3e36;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        .hearts {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 105, 180, 0.6);
+            transform: rotate(45deg);
+            animation: float 15s infinite linear;
+        }
+        
+        .heart:before, .heart:after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 105, 180, 0.6);
+            border-radius: 50%;
+        }
+        
+        .heart:before {
+            top: -10px;
+            left: 0;
+        }
+        
+        .heart:after {
+            top: 0;
+            left: -10px;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(45deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(45deg);
+                opacity: 0;
+            }
+        }
+        
+        header {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo i {
+            font-size: 2rem;
+            color: #e91e63;
+        }
+        
+        .logo h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.2rem;
+            color: #5a3e36;
+        }
+        
+        .music-control {
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .music-control:hover {
+            background: rgba(255, 255, 255, 0.5);
+            transform: scale(1.1);
+        }
+        
+        .music-control i {
+            font-size: 1.2rem;
+            color: #e91e63;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.25);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .hero h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            color: #e91e63;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            line-height: 1.6;
+        }
+        
+        .app-container {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .signup-section, .connect-section {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+            color: #e91e63;
+        }
+        
+        .section-title i {
+            font-size: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.3);
+            background: rgba(255, 255, 255, 0.9);
+        }
+        
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 0.9rem;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(to right, #e91e63, #ff5252);
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(233, 30, 99, 0.4);
+        }
+        
+        .code-display {
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            font-size: 1.2rem;
+        }
+        
+        .code {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            color: #e91e63;
+            margin: 0.5rem 0;
+            font-family: monospace;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .feature-card i {
+            font-size: 3rem;
+            color: #e91e63;
+            margin-bottom: 1.5rem;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #5a3e36;
+        }
+        
+        .feature-card p {
+            color: #5a3e36;
+            line-height: 1.6;
+        }
+        
+        footer {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            text-align: center;
+            margin-top: auto;
+        }
+        
+        footer p {
+            color: #5a3e36;
+            font-size: 1rem;
+        }
+        
+        .telegram-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 1rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateX(120%);
+            transition: transform 0.5s ease;
+            z-index: 1000;
+        }
+        
+        .telegram-notification.show {
+            transform: translateX(0);
+        }
+        
+        .telegram-notification i {
+            color: #0088cc;
+            font-size: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .app-container {
+                flex-direction: column;
+            }
+            
+            .hero h2 {
+                font-size: 2.5rem;
+            }
+            
+            header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating hearts background -->
+    <div class="hearts" id="hearts"></div>
+    
+    <!-- Telegram notification -->
+    <div class="telegram-notification" id="telegramNotification">
+        <i class="fab fa-telegram"></i>
+        <div>
+            <h3>Details Sent to Telegram!</h3>
+            <p>Your signup information has been sent successfully.</p>
+        </div>
+    </div>
+    
+    <header>
+        <div class="logo">
+            <i class="fas fa-heart"></i>
+            <h1>Romantic Chat</h1>
+        </div>
+        <button class="music-control" id="musicControl">
+            <i class="fas fa-music"></i>
+        </button>
+    </header>
+    
+    <div class="container">
+        <div class="hero">
+            <h2>Whisper Sweet Nothings</h2>
+            <p>Create your private romantic space where you can connect with your loved one using a unique 10-digit code. Share your thoughts, feelings, and special moments in complete privacy.</p>
+        </div>
+        
+        <div class="app-container">
+            <div class="signup-section">
+                <div class="section-title">
+                    <i class="fas fa-user-plus"></i>
+                    <h2>Create Your Account</h2>
+                </div>
+                
+                <form id="signupForm">
+                    <div class="form-group">
+                        <label for="name">Your Name</label>
+                        <input type="text" id="name" class="form-control" placeholder="Enter your name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" class="form-control" placeholder="Enter your email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" class="form-control" placeholder="Enter your phone number" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" class="form-control" placeholder="Create a password" required>
+                    </div>
+                    
+                    <button type="submit" class="btn">Sign Up & Connect</button>
+                </form>
+            </div>
+            
+            <div class="connect-section">
+                <div class="section-title">
+                    <i class="fas fa-heart"></i>
+                    <h2>Connect with Your Partner</h2>
+                </div>
+                
+                <p>After signing up, you'll receive a unique 10-digit connection code. Share this code with your partner to start your private romantic chat.</p>
+                
+                <div class="code-display">
+                    <p>Your Connection Code:</p>
+                    <div class="code" id="connectionCode">XXXXXXXXXX</div>
+                    <p>Share this code with your partner to connect</p>
+                </div>
+                
+                <div class="form-group">
+                    <label for="partnerCode">Enter Partner's Code</label>
+                    <input type="text" id="partnerCode" class="form-control" placeholder="Enter 10-digit code" maxlength="10">
+                </div>
+                
+                <button class="btn">Connect & Start Chatting</button>
+            </div>
+        </div>
+        
+        <div class="features">
+            <div class="feature-card">
+                <i class="fas fa-lock"></i>
+                <h3>Private & Secure</h3>
+                <p>Your conversations are encrypted and completely private. Only you and your partner can access your chat.</p>
+            </div>
+            
+            <div class="feature-card">
+                <i class="fas fa-mobile-alt"></i>
+                <h3>Instant Notifications</h3>
+                <p>Get real-time notifications on Telegram when someone signs up with your connection code.</p>
+            </div>
+            
+            <div class="feature-card">
+                <i class="fas fa-heartbeat"></i>
+                <h3>Romantic Experience</h3>
+                <p>Enjoy a beautifully designed interface with romantic background music to enhance your connection.</p>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>Made with <i class="fas fa-heart" style="color:#e91e63;"></i> for couples in love | Romantic Chat &copy; 2023</p>
+    </footer>
+    
+    <audio id="backgroundMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+    
+    <script>
+        // Create floating hearts
+        const heartsContainer = document.getElementById('hearts');
+        for (let i = 0; i < 30; i++) {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.style.left = `${Math.random() * 100}%`;
+            heart.style.animationDelay = `${Math.random() * 15}s`;
+            heart.style.width = `${Math.random() * 15 + 10}px`;
+            heart.style.height = heart.style.width;
+            heartsContainer.appendChild(heart);
+        }
+        
+        // Music control
+        const musicControl = document.getElementById('musicControl');
+        const backgroundMusic = document.getElementById('backgroundMusic');
+        let isPlaying = false;
+        
+        musicControl.addEventListener('click', () => {
+            if (isPlaying) {
+                backgroundMusic.pause();
+                musicControl.innerHTML = '<i class="fas fa-music"></i>';
+            } else {
+                backgroundMusic.play().catch(e => console.log("Autoplay blocked"));
+                musicControl.innerHTML = '<i class="fas fa-pause"></i>';
+            }
+            isPlaying = !isPlaying;
+        });
+        
+        // Form submission
+        const signupForm = document.getElementById('signupForm');
+        const connectionCode = document.getElementById('connectionCode');
+        const telegramNotification = document.getElementById('telegramNotification');
+        
+        signupForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Get form values
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            
+            // Generate random 10-digit code
+            const code = Math.floor(1000000000 + Math.random() * 9000000000).toString();
+            connectionCode.textContent = code;
+            
+            // Show notification
+            telegramNotification.classList.add('show');
+            
+            // Simulate sending to Telegram
+            setTimeout(() => {
+                console.log(`Sending to Telegram:
+Name: ${name}
+Email: ${email}
+Phone: ${phone}
+Connection Code: ${code}`);
+                
+                // Hide notification after 5 seconds
+                setTimeout(() => {
+                    telegramNotification.classList.remove('show');
+                }, 5000);
+            }, 1000);
+            
+            // Reset form
+            signupForm.reset();
+        });
+        
+        // Simulate music autoplay with user interaction
+        document.addEventListener('click', function initialPlay() {
+            backgroundMusic.play().catch(e => console.log("Autoplay blocked"));
+            document.removeEventListener('click', initialPlay);
+        });
+    </script>
+</body>
+</html>
